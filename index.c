@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define MIN_LETTERS_IN_STRING 0
 #define MAX_LETTERS_IN_STRING 100
@@ -9,9 +10,27 @@
 int main() {
     short int lettersInString = 0;
     short int numberOfStrings = 0;
+    char isManualInputValue = 0;
+    bool isManualInput;
+
+    printf("If You want to put Your custom strings type 'c' and if You want strings be auto-generated type 'a':\n");
+    do {
+        isManualInputValue = getchar();
+        fflush(stdin);
+
+        if(isManualInputValue != 'c' && isManualInputValue != 'a') {
+            printf("Invalid input. Please type the value 'c' or 'a'.\n");
+            continue;
+        }
+
+        if(isManualInputValue == 'c') {
+            isManualInput = true;
+        } else {
+            isManualInput = false;
+        }
+    } while (isManualInputValue != 'c' && isManualInputValue != 'a');
 
     printf("Type the number of letters in one string:\n");
-
     do {
         if (scanf("%hd", &lettersInString) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
@@ -26,6 +45,7 @@ int main() {
         }
     } while (lettersInString <= MIN_LETTERS_IN_STRING || lettersInString > MAX_LETTERS_IN_STRING);
 
+    printf("Type the number of strings:\n");
     do {
         if (scanf("%hd", &numberOfStrings) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
