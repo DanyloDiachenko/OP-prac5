@@ -9,6 +9,8 @@
 #define MAX_SYMBOLS_IN_STRING 1000
 #define MIN_NUMBER_OF_STRINGS 1
 #define MAX_NUMBER_OF_STRINGS 10000
+#define SPACE_SYMBOL_CODE 32
+#define TILDA_SYMBOL_CODE 126
 
 void sortStringsArray(char **stringsArray, int stringsNumber) {
     for (int i = 0; i < stringsNumber - 1; i++) {
@@ -27,6 +29,10 @@ int getRandomNumber(int rangeMin, int rangeMax) {
     return rangeMin + rand() % (rangeMax - rangeMin + 1);
 }
 
+int getRandomSymbol() {
+    return getRandomNumber(SPACE_SYMBOL_CODE, TILDA_SYMBOL_CODE);
+}
+
 int main() {
     int symbolsInStringNumber = 0;
     int stringsNumber = 0;
@@ -42,6 +48,7 @@ int main() {
 
         if (isManualInputValue != 'c' && isManualInputValue != 'a') {
             printf("Invalid input. Please type 'c' or 'a'.\n");
+
             continue;
         }
 
@@ -53,6 +60,7 @@ int main() {
         if (scanf("%d", &symbolsInStringNumber) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
             fflush(stdin);
+
             continue;
         }
         fflush(stdin);
@@ -67,6 +75,7 @@ int main() {
         if (scanf("%d", &stringsNumber) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
             fflush(stdin);
+
             continue;
         }
         fflush(stdin);
@@ -81,11 +90,13 @@ int main() {
         printf("Memory allocation failed!\n");
         printf("Type any key to close the program\n");
         getchar();
-        return 1;
+
+        return 0;
     }
 
     for (int i = 0; i < stringsNumber; i++) {
         strings[i] = (char *)malloc((symbolsInStringNumber + 1) * sizeof(char));
+
         if (strings[i] == NULL) {
             printf("Memory allocation failed!\n");
 
@@ -97,7 +108,7 @@ int main() {
             printf("Type any key to close the program\n");
             getchar();
 
-            return 1;
+            return 0;
         }
     }
 
@@ -107,27 +118,27 @@ int main() {
             printf("String %d: ", i + 1);
 
             if (fgets(strings[i], symbolsInStringNumber + 1, stdin) == NULL || strings[i][0] == '\n') {
+                fflush(stdin);
                 printf("Error: Input cannot be empty. Please enter a non-empty string.\n");
                 i--;
+
                 continue;
             }
+            fflush(stdin);
 
             strings[i][strcspn(strings[i], "\n")] = '\0';
         }
     } else {
-        int randomSymbol = 0;
         srand(time(NULL));
 
         for (int i = 0; i < stringsNumber; i++) {
             int currentSymbolIndex = 0;
 
             do {
-                randomSymbol = getRandomNumber(65, 122);
+                int randomSymbol = getRandomSymbol();
 
-                if ((randomSymbol > 64 && randomSymbol < 91) || (randomSymbol > 96 && randomSymbol < 123)) {
-                    strings[i][currentSymbolIndex] = randomSymbol;
-                    currentSymbolIndex++;
-                }
+                strings[i][currentSymbolIndex] = randomSymbol;
+                currentSymbolIndex++;
             } while (currentSymbolIndex < symbolsInStringNumber);
 
             strings[i][currentSymbolIndex] = '\0';
