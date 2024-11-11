@@ -15,6 +15,7 @@ void sortStringsArray(char **stringsArray, int stringsNumber) {
         for (int j = i + 1; j < stringsNumber; j++) {
             if (strcmp(stringsArray[i], stringsArray[j]) > 0) {
                 char *tmp = stringsArray[i];
+
                 stringsArray[i] = stringsArray[j];
                 stringsArray[j] = tmp;
             }
@@ -22,13 +23,13 @@ void sortStringsArray(char **stringsArray, int stringsNumber) {
     }
 }
 
-int getRandomNumber(unsigned short int rangeMin, unsigned short int rangeMax) {
+int getRandomNumber(int rangeMin, int rangeMax) {
     return rangeMin + rand() % (rangeMax - rangeMin + 1);
 }
 
 int main() {
-    unsigned short int symbolsInStringNumber = 0;
-    unsigned short int stringsNumber = 0;
+    int symbolsInStringNumber = 0;
+    int stringsNumber = 0;
     char isManualInputValue = 0;
     bool isManualInput = false;
 
@@ -41,7 +42,6 @@ int main() {
 
         if (isManualInputValue != 'c' && isManualInputValue != 'a') {
             printf("Invalid input. Please type 'c' or 'a'.\n");
-
             continue;
         }
 
@@ -50,10 +50,9 @@ int main() {
 
     printf("Type the number of letters in one string:\n");
     do {
-        if (scanf("%hd", &symbolsInStringNumber) != 1) {
+        if (scanf("%d", &symbolsInStringNumber) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
             fflush(stdin);
-
             continue;
         }
         fflush(stdin);
@@ -65,10 +64,9 @@ int main() {
 
     printf("Type the number of strings:\n");
     do {
-        if (scanf("%hd", &stringsNumber) != 1) {
+        if (scanf("%d", &stringsNumber) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
             fflush(stdin);
-
             continue;
         }
         fflush(stdin);
@@ -83,7 +81,6 @@ int main() {
         printf("Memory allocation failed!\n");
         printf("Type any key to close the program\n");
         getchar();
-
         return 1;
     }
 
@@ -112,18 +109,17 @@ int main() {
             if (fgets(strings[i], symbolsInStringNumber + 1, stdin) == NULL || strings[i][0] == '\n') {
                 printf("Error: Input cannot be empty. Please enter a non-empty string.\n");
                 i--;
-
                 continue;
             }
 
             strings[i][strcspn(strings[i], "\n")] = '\0';
         }
     } else {
-        unsigned short int randomSymbol = 0;
+        int randomSymbol = 0;
         srand(time(NULL));
 
         for (int i = 0; i < stringsNumber; i++) {
-            unsigned short int currentSymbolIndex = 0;
+            int currentSymbolIndex = 0;
 
             do {
                 randomSymbol = getRandomNumber(65, 122);
