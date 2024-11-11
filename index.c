@@ -10,7 +10,7 @@ char **allocateStringArray(int stringsNumber);
 char **allocateMemoryForStrings(int stringsNumber, int symbolsInStringNumber);
 
 int main() {
-    printf("This program sorts strings\n");
+    printf("Welcome! This program sorts strings.\n");
 
     setlocale(LC_ALL, "");
 
