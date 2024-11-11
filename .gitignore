@@ -2,6 +2,7 @@
 *.d
 index
 .idea
+.vscode
 
 # Object files
 *.o
