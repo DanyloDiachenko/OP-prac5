@@ -5,10 +5,10 @@
 #include <time.h>
 #include <locale.h>
 
-#define MIN_SYMBOLS_IN_STRING 0
-#define MAX_SYMBOLS_IN_STRING 1000000
-#define MIN_NUMBER_OF_STRINGS 0
-#define MAX_NUMBER_OF_STRINGS 1000000
+#define MIN_SYMBOLS_IN_STRING 1
+#define MAX_SYMBOLS_IN_STRING 1000
+#define MIN_NUMBER_OF_STRINGS 1
+#define MAX_NUMBER_OF_STRINGS 10000
 
 void sortStringsArray(char **stringsArray, int stringsNumber) {
     for (int i = 0; i < stringsNumber - 1; i++) {
@@ -30,7 +30,7 @@ int main() {
     unsigned short int symbolsInStringNumber = 0;
     unsigned short int stringsNumber = 0;
     char isManualInputValue = 0;
-    bool isManualInput;
+    bool isManualInput = false;
 
     setlocale(LC_ALL, "");
 
@@ -41,6 +41,7 @@ int main() {
 
         if (isManualInputValue != 'c' && isManualInputValue != 'a') {
             printf("Invalid input. Please type 'c' or 'a'.\n");
+
             continue;
         }
 
@@ -52,6 +53,7 @@ int main() {
         if (scanf("%hd", &symbolsInStringNumber) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
             fflush(stdin);
+
             continue;
         }
         fflush(stdin);
@@ -66,6 +68,7 @@ int main() {
         if (scanf("%hd", &stringsNumber) != 1) {
             printf("Invalid input. Please enter an integer value.\n");
             fflush(stdin);
+
             continue;
         }
         fflush(stdin);
@@ -75,16 +78,28 @@ int main() {
         }
     } while (stringsNumber <= MIN_NUMBER_OF_STRINGS || stringsNumber > MAX_NUMBER_OF_STRINGS);
 
-    char **str = malloc(stringsNumber * sizeof(char *));
-    if (str == NULL) {
+    char **strings = malloc(stringsNumber * sizeof(char *));
+    if (strings == NULL) {
         printf("Memory allocation failed!\n");
+        printf("Type any key to close the program\n");
+        getchar();
+
         return 1;
     }
 
     for (int i = 0; i < stringsNumber; i++) {
-        str[i] = (char *)malloc((symbolsInStringNumber + 1) * sizeof(char));
-        if (str[i] == NULL) {
+        strings[i] = (char *)malloc((symbolsInStringNumber + 1) * sizeof(char));
+        if (strings[i] == NULL) {
             printf("Memory allocation failed!\n");
+
+            for (int j = 0; j < i; j++) {
+                free(strings[j]);
+            }
+            free(strings);
+
+            printf("Type any key to close the program\n");
+            getchar();
+
             return 1;
         }
     }
@@ -94,20 +109,18 @@ int main() {
         for (int i = 0; i < stringsNumber; i++) {
             printf("String %d: ", i + 1);
 
-            if (fgets(str[i], symbolsInStringNumber + 1, stdin) == NULL || str[i][0] == '\n') {
-                fflush(stdin);
+            if (fgets(strings[i], symbolsInStringNumber + 1, stdin) == NULL || strings[i][0] == '\n') {
                 printf("Error: Input cannot be empty. Please enter a non-empty string.\n");
                 i--;
+
                 continue;
             }
-            fflush(stdin);
 
-            str[i][strcspn(str[i], "\n")] = '\0';
+            strings[i][strcspn(strings[i], "\n")] = '\0';
         }
     } else {
         unsigned short int randomSymbol = 0;
-        unsigned currentTimeInSeconds = time(NULL);
-        srand(currentTimeInSeconds);
+        srand(time(NULL));
 
         for (int i = 0; i < stringsNumber; i++) {
             unsigned short int currentSymbolIndex = 0;
@@ -116,41 +129,31 @@ int main() {
                 randomSymbol = getRandomNumber(65, 122);
 
                 if ((randomSymbol > 64 && randomSymbol < 91) || (randomSymbol > 96 && randomSymbol < 123)) {
-                    str[i][currentSymbolIndex] = randomSymbol;
+                    strings[i][currentSymbolIndex] = randomSymbol;
                     currentSymbolIndex++;
                 }
             } while (currentSymbolIndex < symbolsInStringNumber);
-            str[i][currentSymbolIndex] = '\0';
+
+            strings[i][currentSymbolIndex] = '\0';
         }
     }
 
     printf("\nYour array:\n");
     for (int i = 0; i < stringsNumber; i++) {
-        printf("%d -> %s\n", i + 1, str[i]);
+        printf("%d -> %s\n", i + 1, strings[i]);
     }
 
-    char **stringPtrs = malloc(stringsNumber * sizeof(char *));
-    if (stringPtrs == NULL) {
-        printf("Memory allocation failed!\n");
-        return 1;
-    }
-
-    for (int i = 0; i < stringsNumber; i++) {
-        stringPtrs[i] = str[i];
-    }
-
-    sortStringsArray(stringPtrs, stringsNumber);
+    sortStringsArray(strings, stringsNumber);
 
     printf("\nSorted strings:\n");
     for (int i = 0; i < stringsNumber; i++) {
-        printf("%d -> %s\n", i + 1, stringPtrs[i]);
+        printf("%d -> %s\n", i + 1, strings[i]);
     }
 
     for (int i = 0; i < stringsNumber; i++) {
-        free(str[i]);
+        free(strings[i]);
     }
-    free(str);
-    free(stringPtrs);
+    free(strings);
 
     return 0;
 }
