@@ -9,6 +9,6 @@
 #include <locale.h>
 
 #include "./constants.h"
-#include "./functions.c"
+#include "./functions.h"
 
 #endif // INCLUDES_H
