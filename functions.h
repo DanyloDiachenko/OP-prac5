@@ -174,9 +174,7 @@ void getGeneratedSymbols(int stringsNumber, char **strings, int symbolsInStringN
 
         do
         {
-            int randomSymbol = getRandomSymbol();
-
-            strings[i][currentSymbolIndex] = randomSymbol;
+            strings[i][currentSymbolIndex] = getRandomSymbol();
             currentSymbolIndex++;
         } while (currentSymbolIndex < symbolsInStringNumber);
 
@@ -199,6 +197,7 @@ void getStrings(bool isManualInput, int stringsNumber, char **strings, int symbo
 char **allocateStringArray(int stringsNumber)
 {
     char **strings = malloc(stringsNumber * sizeof(char *));
+
     if (strings == NULL)
     {
         printf("Memory allocation failed!\n");
@@ -207,6 +206,7 @@ char **allocateStringArray(int stringsNumber)
 
         return NULL;
     }
+
     return strings;
 }
 
