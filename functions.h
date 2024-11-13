@@ -73,7 +73,7 @@ int getAndValidateSymbolsInString()
 
         if (symbolsInStringNumber <= MIN_SYMBOLS_IN_STRING || symbolsInStringNumber > MAX_SYMBOLS_IN_STRING)
         {
-            printf("Please enter a value > %d and <= %d.\n", MIN_SYMBOLS_IN_STRING, MAX_SYMBOLS_IN_STRING);
+            printf("Please enter decimal value > %d and <= %d.\n", MIN_SYMBOLS_IN_STRING, MAX_SYMBOLS_IN_STRING);
         }
     } while (symbolsInStringNumber <= MIN_SYMBOLS_IN_STRING || symbolsInStringNumber > MAX_SYMBOLS_IN_STRING);
 
@@ -100,7 +100,7 @@ int getAndValidateStringsNumber()
 
         if (stringsNumber <= MIN_NUMBER_OF_STRINGS || stringsNumber > MAX_NUMBER_OF_STRINGS)
         {
-            printf("Please enter a value > %d and <= %d.\n", MIN_NUMBER_OF_STRINGS, MAX_NUMBER_OF_STRINGS);
+            printf("Please enter decimal value > %d and <= %d.\n", MIN_NUMBER_OF_STRINGS, MAX_NUMBER_OF_STRINGS);
         }
     } while (stringsNumber <= MIN_NUMBER_OF_STRINGS || stringsNumber > MAX_NUMBER_OF_STRINGS);
 
@@ -136,23 +136,34 @@ void freeMemory(int stringsNumber, char **strings)
 void getStringsByKeyboard(int stringsNumber, char **strings, int symbolsInStringNumber)
 {
     printf("Enter strings:\n");
+
     for (int i = 0; i < stringsNumber; i++)
     {
         printf("String %d: ", i + 1);
 
-        if (fgets(strings[i], symbolsInStringNumber + 1, stdin) == NULL || strings[i][0] == '\n')
+        if (fgets(strings[i], symbolsInStringNumber + 2, stdin) == NULL || strings[i][0] == '\n')
         {
-            fflush(stdin);
             printf("Error: Input cannot be empty. Please enter a non-empty string.\n");
+            fflush(stdin);
             i--;
 
             continue;
         }
         fflush(stdin);
 
-        strings[i][strcspn(strings[i], "\n")] = '\0';
+        if (strings[i][strcspn(strings[i], "\n")] == '\n')
+        {
+            strings[i][strcspn(strings[i], "\n")] = '\0';
+        }
+
+        if (strlen(strings[i]) != symbolsInStringNumber)
+        {
+            printf("Error: Input must contain exactly %d characters. Please enter a valid string.\n", symbolsInStringNumber);
+            i--;
+        }
     }
 }
+
 
 void getGeneratedSymbols(int stringsNumber, char **strings, int symbolsInStringNumber)
 {
