@@ -9,9 +9,11 @@ void getStrings(bool isManualInput, int stringsNumber, char **strings, int symbo
 char **allocateStringArray(int stringsNumber);
 char **allocateMemoryForStrings(int stringsNumber, int symbolsInStringNumber);
 
-int main() {
+int main()
+{
     printf("Welcome! This program sorts strings.\n");
 
+    srand(time(NULL));
     setlocale(LC_ALL, "");
 
     bool isManualInput = getAndValidateIsManualInput();
@@ -19,7 +21,8 @@ int main() {
     int stringsNumber = getAndValidateStringsNumber();
 
     char **strings = allocateMemoryForStrings(stringsNumber, symbolsInStringNumber);
-    if (strings == NULL) {
+    if (strings == NULL)
+    {
         return 0;
     }
 

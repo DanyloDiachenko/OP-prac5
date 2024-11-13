@@ -166,8 +166,6 @@ void getStringsByKeyboard(int stringsNumber, char **strings, int symbolsInString
 
 void getGeneratedSymbols(int stringsNumber, char **strings, int symbolsInStringNumber)
 {
-    srand(time(NULL));
-
     for (int i = 0; i < stringsNumber; i++)
     {
         int currentSymbolIndex = 0;
